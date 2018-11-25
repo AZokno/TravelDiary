@@ -27,32 +27,32 @@ export const tryAuth = (authData, authMode) => {
       }
     }).then(res => {
       if (res.ok) {
-          return res.json();
+        return res.json();
       } else {
-          throw(new Error());
+        throw (new Error());
+      }
+    }).then(parsedRes => {
+      dispatch(uiStopLoading());
+      console.log(parsedRes);
+      if (!parsedRes.idToken) {
+        alert("Authentication failed, please try again!");
+      } else {
+        dispatch(
+          authStoreToken(
+            parsedRes.localId,
+            parsedRes.email,
+            parsedRes.idToken,
+            parsedRes.expiresIn,
+            parsedRes.refreshToken,
+          )
+        );
+        startMainTabs();
       }
     }).catch(err => {
-        console.log(err);
-        alert("Authentication failed, please try again!");
-        dispatch(uiStopLoading());
-      }).then(parsedRes => {
-        dispatch(uiStopLoading());
-        console.log(parsedRes);
-        if (!parsedRes.idToken) {
-          alert("Authentication failed, please try again!");
-        } else {
-          dispatch(
-            authStoreToken(
-              parsedRes.localId,
-              parsedRes.email,
-              parsedRes.idToken,
-              parsedRes.expiresIn,
-              parsedRes.refreshToken,
-            )
-          );
-          startMainTabs();
-        }
-      });
+      console.log(err);
+      alert("Authentication failed, please try again!");
+      dispatch(uiStopLoading());
+    });
   };
 };
 
@@ -94,7 +94,7 @@ export const authGetToken = () => {
           AsyncStorage.getItem(ASYNC_STORE_UID),
           AsyncStorage.getItem(ASYNC_STORE_EMAIL),
           AsyncStorage.getItem(ASYNC_STORE_TOKEN)
-          ])
+        ])
           .catch(err => reject())
           .then(items => {
 
@@ -116,17 +116,17 @@ export const authGetToken = () => {
             const now = new Date();
             if (parsedExpiryDate > now) {
               console.log("authToken async");
-              console.log({uid: uidFromStorage, email: emailFromStorage, token: tokenFromStorage});
+              console.log({ uid: uidFromStorage, email: emailFromStorage, token: tokenFromStorage });
               dispatch(authSetToken(uidFromStorage, emailFromStorage, tokenFromStorage, parsedExpiryDate));
-              resolve({uid: uidFromStorage, email: emailFromStorage, token: tokenFromStorage});
+              resolve({ uid: uidFromStorage, email: emailFromStorage, token: tokenFromStorage });
             } else {
               reject();
             }
           });
       } else {
         console.log("authToken else");
-        console.log({uid: uid, email: email, token: token});
-        resolve({uid: uid, email: email, token: token});
+        console.log({ uid: uid, email: email, token: token });
+        resolve({ uid: uid, email: email, token: token });
       }
     });
     return promise
@@ -137,25 +137,25 @@ export const authGetToken = () => {
           AsyncStorage.getItem(ASYNC_STORE_REFRESH_TOKEN),
           AsyncStorage.getItem(ASYNC_STORE_UID),
           AsyncStorage.getItem(ASYNC_STORE_EMAIL)
-          ]).then(refreshItems => {
-            console.log("refreshItems");
-            console.log(refreshItems);
+        ]).then(refreshItems => {
+          console.log("refreshItems");
+          console.log(refreshItems);
 
-            let refreshToken = refreshItems[0];
-            uid = refreshItems[1];
-            email = refreshItems[2];
+          let refreshToken = refreshItems[0];
+          uid = refreshItems[1];
+          email = refreshItems[2];
 
-            return fetch(
-              REFRESH_TOKEN_API + "?key=" + API_KEY,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: "grant_type=refresh_token&refresh_token=" + refreshToken
-              }
-            );
-          })
+          return fetch(
+            REFRESH_TOKEN_API + "?key=" + API_KEY,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: "grant_type=refresh_token&refresh_token=" + refreshToken
+            }
+          );
+        })
           .then(res => res.json())
           .then(parsedRes => {
             if (parsedRes.id_token) {
@@ -169,7 +169,7 @@ export const authGetToken = () => {
                   parsedRes.refresh_token
                 )
               );
-              return { uid: uid, email: email, token: parsedRes.id_token};
+              return { uid: uid, email: email, token: parsedRes.id_token };
             } else {
               dispatch(authClearStorage());
             }
@@ -206,23 +206,23 @@ export const authClearStorage = () => {
 };
 
 export const authLogout = () => {
-    return dispatch => {
-        dispatch(authClearStorage())
-            .then(() => {
-                Navigation.startSingleScreenApp({
-                    screen: {
-                        screen: "travel-diary.AuthScreen",
-                        title: "Login"
-                    }
-                });
+  return dispatch => {
+    dispatch(authClearStorage())
+      .then(() => {
+        Navigation.startSingleScreenApp({
+          screen: {
+            screen: "travel-diary.AuthScreen",
+            title: "Login"
+          }
         });
-        dispatch(authRemoveToken());
-        dispatch(clearList());
-    };
+      });
+    dispatch(authRemoveToken());
+    dispatch(clearList());
+  };
 };
 
 export const authRemoveToken = () => {
-    return {
-        type: AUTH_REMOVE_TOKEN
-    };
+  return {
+    type: AUTH_REMOVE_TOKEN
+  };
 };
