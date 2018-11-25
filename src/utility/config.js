@@ -13,6 +13,14 @@ export const travelDiaryNavigatorStyle = {
     statusBarColor: AFRO_SMURF_COLOR,
 }
 
+export const travelDiaryNavigatorLoginStyle = {
+    navBarBackgroundColor: SNOWMAN_COLOR,
+    navBarTextColor: SMURF_COLOR,
+    navBarButtonColor: SMURF_COLOR,
+    navBarTextFontBold: 'true',
+    statusBarColor: AFRO_SMURF_COLOR,
+}
+
 export const ASYNC_STORE_UID='td:auth:uid';
 export const ASYNC_STORE_EMAIL='td:auth:email';
 export const ASYNC_STORE_TOKEN='td:auth:token';

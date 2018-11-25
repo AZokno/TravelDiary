@@ -5,7 +5,7 @@ import { AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from "./actionTypes";
 import { uiStartLoading, uiStopLoading } from "./index";
 import startMainTabs from "../../screens/startMainTabs";
 import { clearList } from "./diary";
-import { API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
+import { travelDiaryNavigatorLoginStyle, API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
 
 export const tryAuth = (authData, authMode) => {
   return dispatch => {
@@ -212,7 +212,8 @@ export const authLogout = () => {
         Navigation.startSingleScreenApp({
           screen: {
             screen: "travel-diary.AuthScreen",
-            title: "Login"
+            title: "Login",
+            navigatorStyle: travelDiaryNavigatorLoginStyle
           }
         });
       });
