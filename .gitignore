@@ -57,6 +57,7 @@ buck-out/
 
 # Functions
 functions/traveldiary.json 
+firebase-debug.log
 
 # API Key
 # android/app/src/main/AndroidManifest.xml

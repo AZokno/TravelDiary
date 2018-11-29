@@ -3,7 +3,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from "./actionTypes";
 import { uiStartLoading, uiStopLoading } from "./index";
-import startMainTabs from "../../screens/startMainTabs";
+import startMainApplication from "../../screens/InitNavigation";
 import { clearList } from "./diary";
 import { travelDiaryNavigatorLoginStyle, API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
 
@@ -46,7 +46,7 @@ export const tryAuth = (authData, authMode) => {
             parsedRes.refreshToken,
           )
         );
-        startMainTabs();
+        startMainApplication();
       }
     }).catch(err => {
       console.log(err);
@@ -97,9 +97,6 @@ export const authGetToken = () => {
         ])
           .catch(err => reject())
           .then(items => {
-
-            console.log("items");
-            console.log(items);
 
             uidFromStorage = items[0];
             emailFromStorage = items[1];
@@ -189,7 +186,7 @@ export const authAutoSignIn = () => {
   return dispatch => {
     dispatch(authGetToken())
       .then(token => {
-        startMainTabs();
+        startMainApplication();
       })
       .catch(err => console.log("Failed to fetch token!"));
   };

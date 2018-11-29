@@ -2,7 +2,7 @@ import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {travelDiaryNavigatorStyle, SMURF_COLOR, KOLIBER_COLOR, SNOWMAN_COLOR} from '../utility/config';
 
-const startTabs = () => {
+const startMainApplication = () => {
     Promise.all([
         Icon.getImageSource("md-bookmarks", 30),
         Icon.getImageSource("md-images", 30),
@@ -78,8 +78,8 @@ const startTabs = () => {
             }
         });
     });
-
-    
 };
 
-export default startTabs;
+
+
+export default startMainApplication;

@@ -6,8 +6,8 @@ import moment from 'moment';
 import StarRating from 'react-native-star-rating';
 import { addEntry } from '../store/actions/index';
 import TravelDiaryInput from '../components/TravelDiaryInput';
-import PickImage from '../components/PickImage';
-import PickLocation from '../components/PickLocation';
+import ChoosePhoto from '../components/ChoosePhoto';
+import ChooseLocation from '../components/ChooseLocation';
 import validate from '../utility/validation';
 import { startAddEntry } from '../store/actions/index';
 import { KOLIBER_COLOR, HIPPOPOTAM_COLOR } from '../utility/config';
@@ -208,7 +208,7 @@ class NewEntryScreen extends Component {
                                 <Text>Photo</Text>
                             </CardItem>
                             <CardItem>
-                                <PickImage onImagePicked={this.imagePickedHandler} ref={ref => (this.imagePicker = ref)} />
+                                <ChoosePhoto onImagePicked={this.imagePickedHandler} ref={ref => (this.imagePicker = ref)} />
                             </CardItem>
                         </Card>
                         <Card>
@@ -216,7 +216,7 @@ class NewEntryScreen extends Component {
                                 <Text>Location</Text>
                             </CardItem>
                             <CardItem>
-                                <PickLocation onLocationPick={this.locationPickedHandler} ref={ref => (this.locationPicker = ref)} />
+                                <ChooseLocation onLocationPick={this.locationPickedHandler} ref={ref => (this.locationPicker = ref)} />
                             </CardItem>
                         </Card>
                         <Card>

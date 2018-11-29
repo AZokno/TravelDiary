@@ -82,12 +82,10 @@ exports.storeImage = functions.https.onRequest((request, response) => {
   });
 });
 
-exports.deleteImage = functions.database
+exports.deletePhoto = functions.database
   .ref("/{uid}/{entryId}")
   .onDelete(event => {
-    const entryData = event.data.previous.val();
-    const imagePath = entryData.imagePath;
-
     const bucket = gcs.bucket("traveldiaryokno-220216.appspot.com");
-    return bucket.file(imagePath).delete();
+    return bucket.file(event.val().imagePath).delete();
   });
+  

@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 
-class PickImage extends Component {
+class ChoosePhoto extends Component {
     state = {
         pickedImage: null
     }
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default PickImage;
+export default ChoosePhoto;

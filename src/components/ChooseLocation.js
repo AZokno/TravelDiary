@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import MapView from 'react-native-maps';
 
-class PickLocation extends Component {
+class ChooseLocation extends Component {
 
     componentWillMount() {
         this.reset();
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default PickLocation;
+export default ChooseLocation;
