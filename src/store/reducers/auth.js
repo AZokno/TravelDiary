@@ -1,4 +1,4 @@
-import { AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from '../actions/actions';
+import { LOGIN_SUCCESFUL, LOGOUT } from '../actions/actions';
 
 const initialState = {
     token: null,
@@ -7,7 +7,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case AUTH_SET_TOKEN:
+        case LOGIN_SUCCESFUL:
             return {
                 ...state,
                 uid: action.uid,
@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
                 token: action.token,
                 expiryDate: action.expiryDate
             };
-        case AUTH_REMOVE_TOKEN:
+        case LOGOUT:
             return {
                 ...state,
                 uid: null,

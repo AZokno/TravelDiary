@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Button, Text, Container, Icon, Spinner, Content, Textarea, Card, CardItem, Body, DatePicker, Form, Item, Label } from 'native-base';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -287,28 +287,6 @@ class NewEntryScreen extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        width: "100%"
-    },
-    button: {
-        margin: 5
-    },
-    imagePreview: {
-        width: "100%",
-        height: "100%"
-    },
-    placeholder: {
-        backgroundColor: "grey",
-        borderWidth: 1,
-        borderColor: "#eee",
-        width: "80%",
-        height: 120
-    }
-});
 
 const mapStateToProps = state => {
     return {

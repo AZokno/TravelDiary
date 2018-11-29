@@ -13,9 +13,9 @@ class ChoosePhoto extends Component {
             pickedImage: null
         });
     }
-
+    
     pickImageHandler = () => {
-        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600 }, res => {
+        ImagePicker.showImagePicker({ title: "Choose a photo", maxWidth: 1280, maxHeight: 720 }, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {

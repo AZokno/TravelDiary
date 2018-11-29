@@ -8,8 +8,6 @@ export const startAddEntry = () => {
     };
 };
 
-
-
 export const addEntry = (entryTitle, location, image, date, rating, description) => {
   return dispatch => {
     let authToken;
