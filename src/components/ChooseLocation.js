@@ -3,21 +3,27 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import MapView from 'react-native-maps';
 
+const ZOOM = 0.2;
+const WARSAW_LATITUDE = 52.230641;
+const WARSAW_LONGITUDE = 21.006681;
+
 class ChooseLocation extends Component {
 
     componentWillMount() {
         this.reset();
     }
-
+    
     reset = () => {
+        const delta = 
+            Dimensions.get('window').width /
+            Dimensions.get('window').height *
+            ZOOM;
         this.setState({
             focusedLocation: {
-                latitude: 37.7900352,
-                longitude: -122.4013726,
-                latitudeDelta: 0.0122,
-                longitudeDelta:
-                    Dimensions.get('window').width / Dimensions.get('window').height *
-                    0.0122
+                latitude: WARSAW_LATITUDE,
+                longitude: WARSAW_LONGITUDE,
+                latitudeDelta: ZOOM,
+                longitudeDelta: delta
             },
             locationChosen: false
         });

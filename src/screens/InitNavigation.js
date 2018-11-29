@@ -1,8 +1,8 @@
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {travelDiaryNavigatorStyle, SMURF_COLOR, KOLIBER_COLOR, SNOWMAN_COLOR} from '../utility/config';
+import {travelDiaryNavigatorLoginStyle, travelDiaryNavigatorStyle, SMURF_COLOR, KOLIBER_COLOR, SNOWMAN_COLOR} from '../utility/config';
 
-const startMainApplication = () => {
+export const startMainApplication = () => {
     Promise.all([
         Icon.getImageSource("md-bookmarks", 30),
         Icon.getImageSource("md-images", 30),
@@ -68,18 +68,16 @@ const startMainApplication = () => {
                 selectedTabFontSize: 11,
                 tabBarHideShadow: false,
             },
-
-            drawer: {
-                left: {
-                    screen: "travel-diary.SideDrawer",
-                    passProps: {}
-                }
-            
-            }
         });
     });
 };
 
-
-
-export default startMainApplication;
+export const startLogin = () => {
+    Navigation.startSingleScreenApp({
+        screen: {
+            screen: "travel-diary.AuthScreen",
+            title: "Login",
+            navigatorStyle: travelDiaryNavigatorLoginStyle
+        }
+    });
+}

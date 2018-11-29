@@ -1,9 +1,9 @@
 import { AsyncStorage } from "react-native";
 import { Navigation } from 'react-native-navigation';
 
-import { AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from "./actionTypes";
+import { AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from "./actions";
 import { uiStartLoading, uiStopLoading } from "./index";
-import startMainApplication from "../../screens/InitNavigation";
+import { startMainApplication, startLogin } from "../../screens/InitNavigation";
 import { clearList } from "./diary";
 import { travelDiaryNavigatorLoginStyle, API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
 
@@ -206,13 +206,7 @@ export const authLogout = () => {
   return dispatch => {
     dispatch(authClearStorage())
       .then(() => {
-        Navigation.startSingleScreenApp({
-          screen: {
-            screen: "travel-diary.AuthScreen",
-            title: "Login",
-            navigatorStyle: travelDiaryNavigatorLoginStyle
-          }
-        });
+        startLogin();
       });
     dispatch(authRemoveToken());
     dispatch(clearList());

@@ -1,4 +1,4 @@
-import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from '../actions/actionTypes';
+import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from '../actions/actions';
 
 const initialState = {
     entries: [],

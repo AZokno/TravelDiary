@@ -1,4 +1,4 @@
-import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from "./actionTypes";
+import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from "./actions";
 import { uiStartLoading, uiStopLoading, authGetToken } from "./index";
 import { DB, STORE_IMAGE_FUNCTION } from "../../utility/config"
 
