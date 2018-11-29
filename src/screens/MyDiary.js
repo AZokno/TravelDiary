@@ -30,13 +30,6 @@ class MyDiaryScreen extends Component {
                 this.goAwayHandler();
             }
         }
-        if (event.type === "NavBarButtonPress") {
-            if (event.id === "sideDrawerToggle") {
-                this.props.navigator.toggleDrawer({
-                    side: "left"
-                });
-            }
-        }
     }    
     
     diaryLoadedHandler = () => {

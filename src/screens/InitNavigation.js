@@ -22,7 +22,7 @@ const startMainApplication = () => {
                             {
                                 icon: sources[3],
                                 title: "Menu",
-                                id: "sideDrawerToggle"
+                                id: "menu"
                             }
                         ]
                     },
@@ -38,7 +38,7 @@ const startMainApplication = () => {
                             {
                                 icon: sources[3],
                                 title: "Menu",
-                                id: "sideDrawerToggle"
+                                id: "menu"
                             }
                         ]
                     }
@@ -54,7 +54,7 @@ const startMainApplication = () => {
                             {
                                 icon: sources[3],
                                 title: "Menu",
-                                id: "sideDrawerToggle"
+                                id: "menu"
                             }
                         ]
                     }

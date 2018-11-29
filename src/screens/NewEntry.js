@@ -70,13 +70,6 @@ class NewEntryScreen extends Component {
                 this.props.onStartAddEntry();
             }
         }
-        if (event.type === "NavBarButtonPress") {
-            if (event.id === "sideDrawerToggle") {
-                this.props.navigator.toggleDrawer({
-                    side: "left"
-                });
-            }
-        }
     }
 
     titleChangedHandler = val => {
