@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ImageBackground, Dimensions, KeyboardAvoidingView } from 'react-native';
-import { Button, Text, Spinner } from 'native-base';
+import { Root, Button, Text, Spinner, Container } from 'native-base';
 import { KOLIBER_COLOR } from '../utility/config';
 
 import { connect } from 'react-redux';
 
 import TravelDiaryInput from '../components/TravelDiaryInput';
 import backgroundImage from '../assets/background.jpg';
-import validate from '../utility/validation';
+import { validate } from '../utility/utils';
 import { tryAuth, authAutoSignIn } from '../store/actions/index';
 
 class AuthScreen extends Component {
@@ -159,44 +159,48 @@ class AuthScreen extends Component {
             signsubButton = null;
         }
         return (
-            <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-                <KeyboardAvoidingView style={[styles.container, this.state.viewMode === "portrait" ? styles.portraitContainer : styles.landscapeContainer]} behavior="padding">
-                    <View style={styles.inputContainer}>
-                        <TravelDiaryInput placeholder="Your e-mail" style={styles.input}
-                            value={this.state.controls.email.value}
-                            onChangeText={(val) => this.updateInputState('email', val)}
-                            valid={this.state.controls.email.valid}
-                            touched={this.state.controls.email.touched}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            keyboardType="email-address" />
-                        <View style={
-                            this.state.viewMode === "portrait" || this.state.authMode === "login"
-                                ? styles.portraitPasswordContainer
-                                : styles.landscapePasswordContainer
-                        }>
-                            <View style={
-                                this.state.viewMode === "portrait" || this.state.authMode === "login"
-                                    ? styles.portraitPasswordItem
-                                    : styles.landscapePasswordItem
-                            }>
-                                <TravelDiaryInput placeholder="Password"
-                                    style={styles.input}
-                                    value={this.state.controls.password.value}
-                                    onChangeText={(val) => this.updateInputState('password', val)}
-                                    valid={this.state.controls.password.valid}
-                                    touched={this.state.controls.password.touched}
-                                    secureTextEntry />
+            <Root>
+                <Container>
+                    <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+                        <KeyboardAvoidingView style={[styles.container, this.state.viewMode === "portrait" ? styles.portraitContainer : styles.landscapeContainer]} behavior="padding">
+                            <View style={styles.inputContainer}>
+                                <TravelDiaryInput placeholder="Your e-mail" style={styles.input}
+                                    value={this.state.controls.email.value}
+                                    onChangeText={(val) => this.updateInputState('email', val)}
+                                    valid={this.state.controls.email.valid}
+                                    touched={this.state.controls.email.touched}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    keyboardType="email-address" />
+                                <View style={
+                                    this.state.viewMode === "portrait" || this.state.authMode === "login"
+                                        ? styles.portraitPasswordContainer
+                                        : styles.landscapePasswordContainer
+                                }>
+                                    <View style={
+                                        this.state.viewMode === "portrait" || this.state.authMode === "login"
+                                            ? styles.portraitPasswordItem
+                                            : styles.landscapePasswordItem
+                                    }>
+                                        <TravelDiaryInput placeholder="Password"
+                                            style={styles.input}
+                                            value={this.state.controls.password.value}
+                                            onChangeText={(val) => this.updateInputState('password', val)}
+                                            valid={this.state.controls.password.valid}
+                                            touched={this.state.controls.password.touched}
+                                            secureTextEntry />
+                                    </View>
+                                    {confirmPasswordControl}
+                                </View>
                             </View>
-                            {confirmPasswordControl}
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                        {signsubButton}
-                        {submitButton}
-                    </View>
-                </KeyboardAvoidingView>
-            </ImageBackground>
+                            <View style={{ flexDirection: "row" }}>
+                                {signsubButton}
+                                {submitButton}
+                            </View>
+                        </KeyboardAvoidingView>
+                    </ImageBackground>
+                </Container>
+            </Root>
         );
     }
 }

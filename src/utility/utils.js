@@ -1,4 +1,7 @@
-const validate = (val, rules, connectedValue) => {
+import React, { Component } from 'react';
+import { Toast } from 'native-base';
+
+export const validate = (val, rules, connectedValue) => {
     let isValid = true;
     for (let rule in rules) {
         switch (rule) {
@@ -37,4 +40,10 @@ const notEmptyValidator = val => {
     return val.trim() !== "";
 }
 
-export default validate;
+export const showError = message => {
+    Toast.show({
+        text: message,
+        type: "danger",
+        buttonText: 'OK'
+    });
+}

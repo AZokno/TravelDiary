@@ -8,7 +8,7 @@ import { addEntry } from '../store/actions/index';
 import TravelDiaryInput from '../components/TravelDiaryInput';
 import ChoosePhoto from '../components/ChoosePhoto';
 import ChooseLocation from '../components/ChooseLocation';
-import validate from '../utility/validation';
+import { validate } from '../utility/utils';
 import { startAddEntry } from '../store/actions/index';
 import { KOLIBER_COLOR, HIPPOPOTAM_COLOR } from '../utility/config';
 

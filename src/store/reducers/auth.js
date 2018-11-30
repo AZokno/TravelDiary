@@ -1,6 +1,8 @@
 import { LOGIN_SUCCESFUL, LOGOUT } from '../actions/actions';
 
 const initialState = {
+    uid: null,
+    email: null,
     token: null,
     expiryDate: null
 };

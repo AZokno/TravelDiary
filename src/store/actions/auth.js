@@ -5,6 +5,7 @@ import { uiStartLoading, uiStopLoading } from "./index";
 import { startMainApplication, startLogin } from "../../screens/InitNavigation";
 import { clearList } from "./diary";
 import { API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
+import { showError } from "../../utility/utils";
 
 export const tryAuth = (authData, authMode) => {
   return dispatch => {
@@ -34,7 +35,7 @@ export const tryAuth = (authData, authMode) => {
       dispatch(uiStopLoading());
       console.log(parsedRes);
       if (!parsedRes.idToken) {
-        alert("Authentication failed, please try again!");
+        showError("Authentication failed. Please try again.");
       } else {
         dispatch(
           authStoreToken(
@@ -49,8 +50,8 @@ export const tryAuth = (authData, authMode) => {
       }
     }).catch(err => {
       console.log(err);
-      alert("Authentication failed, please try again!");
       dispatch(uiStopLoading());
+      showError("Wrong e-mail or password");
     });
   };
 };
@@ -111,8 +112,7 @@ export const authGetToken = () => {
             const parsedExpiryDate = new Date(parseInt(expiryDate));
             const now = new Date();
             if (parsedExpiryDate > now) {
-              console.log("authToken async");
-              console.log({ uid: uidFromStorage, email: emailFromStorage, token: tokenFromStorage });
+              console.log("Auth Token : From AsyncStorage");
               dispatch(authSetToken(uidFromStorage, emailFromStorage, tokenFromStorage, parsedExpiryDate));
               resolve({ uid: uidFromStorage, email: emailFromStorage, token: tokenFromStorage });
             } else {
@@ -120,13 +120,11 @@ export const authGetToken = () => {
             }
           });
       } else {
-        console.log("authToken else");
-        console.log({ uid: uid, email: email, token: token });
+        console.log("Auth Token :  Still valid");
         resolve({ uid: uid, email: email, token: token });
       }
     });
-    return promise
-      .catch(err => {
+    return promise.catch(err => {
         let uid = null;
         let email = null;
         return Promise.all([
@@ -134,8 +132,6 @@ export const authGetToken = () => {
           AsyncStorage.getItem(ASYNC_STORE_UID),
           AsyncStorage.getItem(ASYNC_STORE_EMAIL)
         ]).then(refreshItems => {
-          console.log("refreshItems");
-          console.log(refreshItems);
 
           let refreshToken = refreshItems[0];
           uid = refreshItems[1];
@@ -155,7 +151,7 @@ export const authGetToken = () => {
           .then(res => res.json())
           .then(parsedRes => {
             if (parsedRes.id_token) {
-              console.log("Refresh token worked!");
+              console.log("Auth Token : Token refreshed");
               dispatch(
                 authStoreToken(
                   uid,
@@ -187,7 +183,7 @@ export const authAutoSignIn = () => {
       .then(token => {
         startMainApplication();
       })
-      .catch(err => console.log("Failed to fetch token!"));
+      .catch(err => console.log("Auth Token : Failed to fetch the token"));
   };
 };
 
