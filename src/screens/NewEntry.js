@@ -281,7 +281,6 @@ class NewEntryScreen extends Component {
                                 </CardItem>
                             </Card>
                         </Content>
-
                     </ScrollView>
                 </Container>
             </Root>

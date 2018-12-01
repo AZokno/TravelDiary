@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StyleSheet, View } from 'react-native';
+import { AsyncStorage, StyleSheet, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Root, Icon, Button, Body, Container, CardItem, Card, Content, H3, Text } from 'native-base';
 import { authLogout } from '../store/actions/index';
 import { ASYNC_STORE_EMAIL } from "../utility/config";
+import logo from '../assets/logo-mini-cir.png';
 
 class AboutScreen extends Component {
 
@@ -27,38 +28,45 @@ class AboutScreen extends Component {
         return (
             <Root>
                 <Container>
-                    <Content style={{ alignContent: "center" }}>
-                        <Card>
-                            <CardItem header>
-                                <Text>User</Text>
-                            </CardItem>
-                            <CardItem>
+                    <ScrollView>
+                        <Content style={{ alignContent: "center" }}>
+                            <Card transparent>
                                 <Body style={styles.cardBodyCenter}>
-                                    <H3>{this.state.email}</H3>
+                                    <Image source={logo} style={styles.logo} />
                                 </Body>
-                            </CardItem>
-                        </Card>
-                        <Card>
-                            <CardItem header>
-                                <Text>Application</Text>
-                            </CardItem>
-                            <CardItem>
-                                <Body style={styles.cardBodyCenter}>
-                                    <H3>TravelDiary v1.0</H3>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                        <Card>
-                            <CardItem>
-                                <Body style={styles.cardBodyCenter}>
-                                    <Button danger iconLeft onPress={this.props.logoutHandler}>
-                                        <Icon name='md-power' />
-                                        <Text>Logout</Text>
-                                    </Button>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </Content>
+                            </Card>
+                            <Card>
+                                <CardItem header>
+                                    <Text>User</Text>
+                                </CardItem>
+                                <CardItem>
+                                    <Body style={styles.cardBodyCenter}>
+                                        <H3>{this.state.email}</H3>
+                                    </Body>
+                                </CardItem>
+                            </Card>
+                            <Card>
+                                <CardItem header>
+                                    <Text>Application</Text>
+                                </CardItem>
+                                <CardItem>
+                                    <Body style={styles.cardBodyCenter}>
+                                        <H3>TravelDiary v1.0</H3>
+                                    </Body>
+                                </CardItem>
+                            </Card>
+                            <Card transparent>
+                                <CardItem>
+                                    <Body style={styles.cardBodyCenter}>
+                                        <Button danger iconLeft onPress={this.props.logoutHandler}>
+                                            <Icon name='md-power' />
+                                            <Text>Logout</Text>
+                                        </Button>
+                                    </Body>
+                                </CardItem>
+                            </Card>
+                        </Content>
+                    </ScrollView>
                 </Container>
             </Root>
         );
@@ -67,6 +75,7 @@ class AboutScreen extends Component {
 
 const styles = StyleSheet.create({
     cardBodyCenter: { flexDirection: "row", justifyContent: "center" },
+    logo: { height: 200, width: 200, marginTop: 25 }
 });
 
 const mapToProps = dispatch => {
