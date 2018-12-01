@@ -1,11 +1,36 @@
 import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from "./actions";
 import { uiStartLoading, uiStopLoading, authGetToken } from "./index";
-import { DB } from "../../utility/config"
-import { FIREBASEStoreImage, FIREBASEAddEntry, showError, FIREBASEGetEntries, FIREBASEDeleteEntry } from "../../utility/utils";
+import { showError, FIREBASEStoreImage, FIREBASEAddEntry, FIREBASEGetEntries, FIREBASEDeleteEntry, showSuccess } from "../../utility/utils";
 
 export const startAddEntry = () => {
   return {
     type: START_ADD_ENTRY
+  };
+};
+
+export const entryAdded = () => {
+  return {
+    type: ENTRY_ADDED
+  };
+};
+
+export const clearList = () => {
+  return {
+    type: CLEAR_LIST
+  };
+}
+
+export const setEntries = entries => {
+  return {
+    type: SET_ENTRIES,
+    entries: entries
+  };
+};
+
+export const removeEntry = key => {
+  return {
+    type: REMOVE_ENTRY,
+    key: key
   };
 };
 
@@ -55,7 +80,7 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
         }
       })
       .then(parsedRes => {
-        console.log(parsedRes);
+        showSuccess("Entry added 😊");
         dispatch(uiStopLoading());
         dispatch(entryAdded());
       })
@@ -66,18 +91,6 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
       });
   };
 };
-
-export const entryAdded = () => {
-  return {
-    type: ENTRY_ADDED
-  };
-};
-
-export const clearList = () => {
-  return {
-    type: CLEAR_LIST
-  };
-}
 
 export const getEntries = () => {
   return dispatch => {
@@ -119,13 +132,6 @@ export const getEntries = () => {
   };
 };
 
-export const setEntries = entries => {
-  return {
-    type: SET_ENTRIES,
-    entries: entries
-  };
-};
-
 export const deleteEntry = key => {
   return dispatch => {
     dispatch(authGetToken())
@@ -144,7 +150,7 @@ export const deleteEntry = key => {
         }
       })
       .then(parsedRes => {
-        console.log("Done!");
+        showSuccess("Entry deleted 💥");
       })
       .catch(err => {
         showError("Could not delete the entry. Please try again.");
@@ -152,11 +158,3 @@ export const deleteEntry = key => {
       });
   };
 };
-
-export const removeEntry = key => {
-  return {
-    type: REMOVE_ENTRY,
-    key: key
-  };
-};
-

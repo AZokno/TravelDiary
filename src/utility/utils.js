@@ -129,3 +129,21 @@ export const showDefaultError = () => {
     showError("An error occured. Sorry 😵. Please try again.");
 }
 
+export const showSuccess = message => {
+    Toast.show({
+        text: message,
+        type: "success",
+        buttonText: 'OK',
+        duration: 2000
+    });
+}
+
+export const showInfo = message => {
+    Toast.show({
+        text: message,
+        type: "success",
+        buttonText: 'OK',
+        duration: 2000
+    });
+}
+

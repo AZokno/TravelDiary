@@ -34,8 +34,6 @@ const Diary = props => {
         data = data.concat(sortedByRating);
     });
 
-    console.log(data);
-
     return (
         <FlatList style={styles.listContainer} keyExtractor={(item, index) => item.key} data={data} renderItem={(info) => {
             if (info.item.separator) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
+import { showInfo, showError } from '../utility/utils';
 
 class ChoosePhoto extends Component {
     state = {
@@ -17,9 +18,10 @@ class ChoosePhoto extends Component {
     pickImageHandler = () => {
         ImagePicker.showImagePicker({ title: "Choose a photo", maxWidth: 1280, maxHeight: 720 }, res => {
             if (res.didCancel) {
-                console.log("User cancelled!");
+                showInfo("Cancelled...");
             } else if (res.error) {
-                console.log("Error!", res.error)
+                console.log(res.error);
+                showError("Error occurred 😥")
             } else {
                 this.setState({
                     pickedImage: { uri: res.uri }

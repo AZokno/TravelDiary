@@ -11,14 +11,14 @@ export const login = (authData, authMode) => {
   return dispatch => {
     var authenticationAction = null;
 
-    if (authMode === "signup"){
+    if (authMode === "signup") {
       authenticationAction = FIREBASESignUp(authData);
     } else {
       authenticationAction = FIREBASELogin(authData);
     }
 
     dispatch(uiStartLoading());
-    
+
     authenticationAction.then(res => {
       if (res.ok) {
         return res.json();
@@ -27,7 +27,6 @@ export const login = (authData, authMode) => {
       }
     }).then(result => {
       dispatch(uiStopLoading());
-      console.log(result);
       if (!result.idToken) {
         showError("Authentication failed.");
       } else {
@@ -119,39 +118,39 @@ export const authGetToken = () => {
       }
     });
     return promise.catch(err => {
-        let uid = null;
-        let email = null;
-        return Promise.all([
-          AsyncStorage.getItem(ASYNC_STORE_REFRESH_TOKEN),
-          AsyncStorage.getItem(ASYNC_STORE_UID),
-          AsyncStorage.getItem(ASYNC_STORE_EMAIL)
-        ]).then(refreshItems => {
+      let uid = null;
+      let email = null;
+      return Promise.all([
+        AsyncStorage.getItem(ASYNC_STORE_REFRESH_TOKEN),
+        AsyncStorage.getItem(ASYNC_STORE_UID),
+        AsyncStorage.getItem(ASYNC_STORE_EMAIL)
+      ]).then(refreshItems => {
 
-          let refreshToken = refreshItems[0];
-          uid = refreshItems[1];
-          email = refreshItems[2];
+        let refreshToken = refreshItems[0];
+        uid = refreshItems[1];
+        email = refreshItems[2];
 
-          return FIREBASERefreshToken(refreshToken);
-        })
-          .then(res => res.json())
-          .then(parsedRes => {
-            if (parsedRes.id_token) {
-              console.log("Auth Token : Token refreshed");
-              dispatch(
-                authStoreToken(
-                  uid,
-                  email,
-                  parsedRes.id_token,
-                  parsedRes.expires_in,
-                  parsedRes.refresh_token
-                )
-              );
-              return { uid: uid, email: email, token: parsedRes.id_token };
-            } else {
-              dispatch(authClearStorage());
-            }
-          });
+        return FIREBASERefreshToken(refreshToken);
       })
+        .then(res => res.json())
+        .then(parsedRes => {
+          if (parsedRes.id_token) {
+            console.log("Auth Token : Token refreshed");
+            dispatch(
+              authStoreToken(
+                uid,
+                email,
+                parsedRes.id_token,
+                parsedRes.expires_in,
+                parsedRes.refresh_token
+              )
+            );
+            return { uid: uid, email: email, token: parsedRes.id_token };
+          } else {
+            dispatch(authClearStorage());
+          }
+        });
+    })
       .then(token => {
         if (!token) {
           throw new Error();
