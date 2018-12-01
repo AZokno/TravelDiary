@@ -14,7 +14,7 @@ const DiaryEntry = (props) => (
             <Text note numberOfLines={1}>{props.description ? props.description : "-"}</Text>
         </Body>
         <Right badge>
-            <View style={styles.startStyle}>
+            <View style={styles.starStyle}>
                 <View style={{paddingLeft: 10}}>
                     <StarRating
                         disabled={true}
@@ -38,7 +38,7 @@ const DiaryEntry = (props) => (
 );
 
 const styles = StyleSheet.create({
-    startStyle: {
+    starStyle: {
         width: '100%',
         flexDirection: "row",
         alignItems: "center"

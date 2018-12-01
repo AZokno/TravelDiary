@@ -68,7 +68,7 @@ export const FIREBASEStoreImage = (base64, token) => fetch(
         image: base64
       }),
       headers: {
-        Authorization: "Bearer " + token
+        Authorization: "TOKEN " + token
       }
     }
   )
@@ -121,7 +121,7 @@ export const showError = message => {
         text: message,
         type: "danger",
         buttonText: 'OK',
-        duration: 2000
+        duration: 2500
     });
 }
 
@@ -134,16 +134,15 @@ export const showSuccess = message => {
         text: message,
         type: "success",
         buttonText: 'OK',
-        duration: 2000
+        duration: 2500
     });
 }
 
 export const showInfo = message => {
     Toast.show({
         text: message,
-        type: "success",
         buttonText: 'OK',
-        duration: 2000
+        duration: 2500
     });
 }
 

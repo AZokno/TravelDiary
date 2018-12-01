@@ -231,6 +231,7 @@ class NewEntryScreen extends Component {
                                         <Item stackedLabel>
                                             <Label>When</Label>
                                             <DatePicker
+                                                defaultDate={this.state.controls.date.value}
                                                 locale={"pl"}
                                                 timeZoneOffsetInMinutes={undefined}
                                                 modalTransparent={false}

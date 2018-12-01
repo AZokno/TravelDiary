@@ -4,6 +4,10 @@ const cors = require("cors")({ origin: true });
 const fs = require("fs");
 const UUID = require("uuid-v4");
 
+const TOKEN_AUTH_HEADER = "TOKEN ";
+const TEMP_UPLOADED_FILE = "/tmp/temp-image.jpg";
+const BUCKET = "traveldiaryokno-220216.appspot.com";
+
 const gcconfig = {
   projectId: "traveldiaryokno-220216",
   keyFilename: "traveldiary.json"
@@ -15,77 +19,105 @@ admin.initializeApp({
   credential: admin.credential.cert(require("./traveldiary.json"))
 });
 
+// FIREBASE DEPLOYED FUNCTIONS
+
 exports.storeImage = functions.https.onRequest((request, response) => {
   cors(request, response, () => {
-    if (
-      !request.headers.authorization ||
-      !request.headers.authorization.startsWith("Bearer ")
+    const authorizationHeader = request.headers.authorization;
+
+    if (!(authorizationHeader && authorizationHeader.startsWith(TOKEN_AUTH_HEADER))
     ) {
-      console.log("No token present!");
+      console.log("Could not find the authorization token");
       response.status(403).json({ error: "Unauthorized" });
       return;
     }
-    let idToken;
-    idToken = request.headers.authorization.split("Bearer ")[1];
+
+    let authToken;
+    authToken = authorizationHeader.split(TOKEN_AUTH_HEADER)[1];
     admin
       .auth()
-      .verifyIdToken(idToken)
+      .verifyIdToken(authToken)
       .then(decodedToken => {
-        const body = JSON.parse(request.body);
-        fs.writeFileSync(
-          "/tmp/uploaded-image.jpg",
-          body.image,
-          "base64",
-          err => {
-            console.log(err);
-            return response.status(500).json({ error: err });
-          }
-        );
-        const bucket = gcs.bucket("traveldiaryokno-220216.appspot.com");
-        const uuid = UUID();
-
-        bucket.upload(
-          "/tmp/uploaded-image.jpg",
-          {
-            uploadType: "media",
-            destination: "/traveldiary_images/" + uuid + ".jpg",
-            metadata: {
-              metadata: {
-                contentType: "image/jpeg",
-                firebaseStorageDownloadTokens: uuid
-              }
-            }
-          },
-          (err, file) => {
-            if (!err) {
-              response.status(201).json({
-                imageUrl:
-                  "https://firebasestorage.googleapis.com/v0/b/" +
-                  bucket.name +
-                  "/o/" +
-                  encodeURIComponent(file.name) +
-                  "?alt=media&token=" +
-                  uuid,
-                  imagePath: "/traveldiary_images/" + uuid + ".jpg"
-              });
-            } else {
-              console.log(err);
-              response.status(500).json({ error: err });
-            }
-          }
-        );
+        tokenOKDoStoreImage(request, response);
       })
       .catch(error => {
-        console.log("Token is invalid!");
-        response.status(403).json({error: "Unauthorized"});
+        console.log("Provided token is invalid");
+        response.status(403).json({ error: "Unauthorized" });
       });
   });
 });
 
-exports.deletePhoto = functions.database
+exports.deleteImage = functions.database
   .ref("/{uid}/{entryId}")
   .onDelete(event => {
-    const bucket = gcs.bucket("traveldiaryokno-220216.appspot.com");
+    const bucket = gcs.bucket(BUCKET);
     return bucket.file(event.val().imagePath).delete();
   });
-  
+
+// HELPER FUNCTIONS
+
+const tokenOKDoStoreImage = (request, response) => {
+  const data = JSON.parse(request.body);
+
+  if (!writeTempFile(data.image)) {
+    return response.status(500).json({ error: "Could not store the image." });
+  }
+
+  const bucket = gcs.bucket(BUCKET);
+  const uuid = UUID();
+
+  bucket.upload(
+    TEMP_UPLOADED_FILE,
+    createStoredImageMetadataJSON(uuid),
+    (err, file) => {
+      if (!err) {
+        response.status(201).json(
+          createResponseSuccessJSON(bucket.name, file.name, uuid)
+          );
+      } else {
+        console.log(err);
+        response.status(500).json({ error: err });
+      }
+    }
+  );
+}
+
+const writeTempFile = (image) => {
+  fs.writeFileSync(
+    TEMP_UPLOADED_FILE,
+    image,
+    "base64",
+    err => {
+      console.log(err);
+      return false;
+    }
+  );
+  return true;
+}
+
+const createStoredImageMetadataJSON = (uuid) => {
+  return {
+    uploadType: "media",
+    destination: "/traveldiary_images/" + uuid + ".jpg",
+    metadata: {
+      metadata: {
+        contentType: "image/jpeg",
+        firebaseStorageDownloadTokens: uuid
+      }
+    }
+  };
+}
+
+const createResponseSuccessJSON = (bucketName, fileName, uuid) => {
+  return {
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/" +
+      bucketName +
+      "/o/" +
+      encodeURIComponent(fileName) +
+      "?alt=media&token=" +
+      uuid,
+    imagePath: "/traveldiary_images/" + uuid + ".jpg"
+  };
+}
+
