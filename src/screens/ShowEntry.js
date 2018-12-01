@@ -40,10 +40,10 @@ class ShowEntryScreen extends Component {
                                 <CardItem style={{ flex: 1 }}>
                                     <MapView initialRegion={{
                                         ...this.props.selectedEntry.location,
-                                        latitudeDelta: 0.0122,
+                                        latitudeDelta: 0.01,
                                         longitudeDelta:
                                             Dimensions.get('window').width / Dimensions.get('window').height *
-                                            0.0122
+                                            0.01
                                     }}
                                         style={styles.map}>
                                         <MapView.Marker coordinate={this.props.selectedEntry.location} />
