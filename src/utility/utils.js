@@ -42,6 +42,22 @@ export const FIREBASEAddEntry = (uid, authToken, entryData) => fetch(
     }
   )
 
+export const FIREBASEGetEntries = (uid, authToken) => fetch(
+    DB + uid + ".json?auth=" +
+    authToken
+  )
+  
+export const FIREBASEDeleteEntry = (uid, authToken, id) =>  fetch(
+    DB + uid + "/" +
+    id +
+    ".json?auth=" +
+    authToken,
+    {
+      method: "DELETE"
+    }
+  )
+
+
 // Store image
 
 export const FIREBASEStoreImage = (base64, token) => fetch(

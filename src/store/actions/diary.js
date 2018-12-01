@@ -1,7 +1,7 @@
 import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from "./actions";
 import { uiStartLoading, uiStopLoading, authGetToken } from "./index";
 import { DB } from "../../utility/config"
-import { FIREBASEStoreImage, FIREBASEAddEntry, showError } from "../../utility/utils";
+import { FIREBASEStoreImage, FIREBASEAddEntry, showError, FIREBASEGetEntries, FIREBASEDeleteEntry } from "../../utility/utils";
 
 export const startAddEntry = () => {
   return {
@@ -84,10 +84,7 @@ export const getEntries = () => {
     dispatch(uiStartLoading());
     dispatch(authGetToken())
       .then(token => {
-        return fetch(
-          DB + token.uid + ".json?auth=" +
-          token.token
-        );
+        return FIREBASEGetEntries(token.uid, token.token);
       })
       .catch(() => {
         showError("Security token could not be found.");
@@ -137,15 +134,7 @@ export const deleteEntry = key => {
       })
       .then(token => {
         dispatch(removeEntry(key));
-        return fetch(
-          DB + token.uid + "/" +
-          key +
-          ".json?auth=" +
-          token.token,
-          {
-            method: "DELETE"
-          }
-        );
+        return FIREBASEDeleteEntry(token.uid, token.token ,key);
       })
       .then(res => {
         if (res.ok) {

@@ -5,11 +5,11 @@ import { uiStartLoading, uiStopLoading } from "./index";
 import { startMainApplication, startLogin } from "../../screens/InitNavigation";
 import { clearList } from "./diary";
 import { ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
-import { showError, FIREBASESignUp, FIREBASERefreshToken } from "../../utility/utils";
+import { showError, FIREBASELogin, FIREBASESignUp, FIREBASERefreshToken } from "../../utility/utils";
 
 export const login = (authData, authMode) => {
   return dispatch => {
-    const authenticationAction = null;
+    var authenticationAction = null;
 
     if (authMode === "signup"){
       authenticationAction = FIREBASESignUp(authData);

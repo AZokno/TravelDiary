@@ -63,7 +63,7 @@ class ChooseLocation extends Component {
 
             err => {
                 console.log(err);
-                showError("Failed to fetch the position");
+                showError("Failed to acquire the position");
             })
     }
 
