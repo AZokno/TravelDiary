@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 import { Toast } from 'native-base';
 
+// Endpoint calls
+
+export const login = (authData) => doAuhtentication(VERIFY_USER_API + "?key=" + API_KEY, authData);
+export const signUp = (authData) => doAuhtentication(REGISTER_USER_API + "?key=" + API_KEY, authData);
+
+const doAuhtentication = (url, authData) => fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      email: authData.email,
+      password: authData.password,
+      returnSecureToken: true
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+
+// Validation
+
 export const validate = (val, rules, connectedValue) => {
     let isValid = true;
     for (let rule in rules) {
@@ -40,6 +59,8 @@ const notEmptyValidator = val => {
     return val.trim() !== "";
 }
 
+// Show errors functions
+
 export const showError = message => {
     Toast.show({
         text: message,
@@ -47,3 +68,8 @@ export const showError = message => {
         buttonText: 'OK'
     });
 }
+
+export const showDefaultError = () => {
+    showError("An error occured. Sorry 😵. Please try again.");
+}
+

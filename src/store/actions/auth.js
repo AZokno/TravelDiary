@@ -5,53 +5,46 @@ import { uiStartLoading, uiStopLoading } from "./index";
 import { startMainApplication, startLogin } from "../../screens/InitNavigation";
 import { clearList } from "./diary";
 import { API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
-import { showError } from "../../utility/utils";
+import { showError, signUp, login } from "../../utility/utils";
 
-export const tryAuth = (authData, authMode) => {
+export const login = (authData, authMode) => {
   return dispatch => {
-    dispatch(uiStartLoading());
-    let url = VERIFY_USER_API + "?key=" + API_KEY;
-    if (authMode === "signup") {
-      url =
-        REGISTER_USER_API + "?key=" + API_KEY;
+    const authenticationAction;
+    if (authMode === "signup"){
+      authenticationAction = signUp(authData);
+    } else {
+      authenticationAction = login(authData);
     }
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: authData.email,
-        password: authData.password,
-        returnSecureToken: true
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(res => {
+
+    dispatch(uiStartLoading());
+    
+    authenticationAction.then(res => {
       if (res.ok) {
         return res.json();
       } else {
         throw (new Error());
       }
-    }).then(parsedRes => {
+    }).then(result => {
       dispatch(uiStopLoading());
-      console.log(parsedRes);
-      if (!parsedRes.idToken) {
-        showError("Authentication failed. Please try again.");
+      console.log(result);
+      if (!result.idToken) {
+        showError("Authentication failed.");
       } else {
         dispatch(
           authStoreToken(
-            parsedRes.localId,
-            parsedRes.email,
-            parsedRes.idToken,
-            parsedRes.expiresIn,
-            parsedRes.refreshToken,
+            result.localId,
+            result.email,
+            result.idToken,
+            result.expiresIn,
+            result.refreshToken,
           )
         );
         startMainApplication();
       }
-    }).catch(err => {
-      console.log(err);
+    }).catch(error => {
+      console.log(error);
       dispatch(uiStopLoading());
-      showError("Wrong e-mail or password");
+      showError("⚠ Wrong e-mail or password");
     });
   };
 };
@@ -189,11 +182,12 @@ export const authAutoSignIn = () => {
 
 export const authClearStorage = () => {
   return dispatch => {
-    AsyncStorage.removeItem(ASYNC_STORE_UID);
-    AsyncStorage.removeItem(ASYNC_STORE_EMAIL);
-    AsyncStorage.removeItem(ASYNC_STORE_TOKEN);
-    AsyncStorage.removeItem(ASYNC_STORE_EXPIRY_DATE);
-    return AsyncStorage.removeItem(ASYNC_STORE_REFRESH_TOKEN);
+    return Promise.all([
+      AsyncStorage.removeItem(ASYNC_STORE_UID),
+      AsyncStorage.removeItem(ASYNC_STORE_EMAIL),
+      AsyncStorage.removeItem(ASYNC_STORE_TOKEN),
+      AsyncStorage.removeItem(ASYNC_STORE_EXPIRY_DATE),
+      AsyncStorage.removeItem(ASYNC_STORE_REFRESH_TOKEN)]);
   };
 };
 
