@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import { Spinner, Content } from 'native-base';
+import { Root, Spinner, Content } from 'native-base';
 import { connect } from 'react-redux';
 
 import Diary from '../components/Diary';
-import {getEntries } from '../store/actions/index';
-import {travelDiaryNavigatorStyle, KOLIBER_COLOR} from '../utility/config';
+import { getEntries } from '../store/actions/index';
+import { travelDiaryNavigatorStyle, KOLIBER_COLOR } from '../utility/config';
 
 class MyDiaryScreen extends Component {
-    
+
     state = {
         diaryAnim: new Animated.Value(0)
     }
@@ -18,7 +18,7 @@ class MyDiaryScreen extends Component {
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
 
-        
+
     onNavigatorEvent = event => {
         if (event.type === "ScreenChangedEvent") {
             if (event.id === "willAppear") {
@@ -30,8 +30,8 @@ class MyDiaryScreen extends Component {
                 this.goAwayHandler();
             }
         }
-    }    
-    
+    }
+
     diaryLoadedHandler = () => {
         Animated.timing(this.state.diaryAnim, {
             toValue: 1,
@@ -47,11 +47,11 @@ class MyDiaryScreen extends Component {
             useNativeDriver: true
         }).start();
     }
-    
+
     itemSelectedHandler = key => {
         const selectedEntry = this.props.entries.find(e => {
-                return e.key === key;
-            });
+            return e.key === key;
+        });
         this.props.navigator.push({
             screen: "travel-diary.ShowEntryScreen",
             title: selectedEntry.title,
@@ -65,18 +65,20 @@ class MyDiaryScreen extends Component {
     diaryLoaded() {
         return !this.props.isLoading;
     }
-    
-    render () {
+
+    render() {
         let content = (<View style={styles.spinnerContainer}><Spinner color={KOLIBER_COLOR} /></View>);
         if (this.diaryLoaded()) {
             content = (
-                <Content>
-                    <Animated.View style={{
-                        opacity: this.state.diaryAnim
-                    }}>
-                        <Diary entries={this.props.entries} onItemSelected={this.itemSelectedHandler}/>
-                    </Animated.View>
-                </Content>
+                <Root>
+                    <Content>
+                        <Animated.View style={{
+                            opacity: this.state.diaryAnim
+                        }}>
+                            <Diary entries={this.props.entries} onItemSelected={this.itemSelectedHandler} />
+                        </Animated.View>
+                    </Content>
+                </Root>
             );
         }
         this.diaryLoadedHandler();

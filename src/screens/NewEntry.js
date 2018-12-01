@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Text, Container, Icon, Spinner, Content, Textarea, Card, CardItem, Body, DatePicker, Form, Item, Label } from 'native-base';
+import { Root, Button, Text, Container, Icon, Spinner, Content, Textarea, Card, CardItem, Body, DatePicker, Form, Item, Label } from 'native-base';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import StarRating from 'react-native-star-rating';
@@ -192,98 +192,99 @@ class NewEntryScreen extends Component {
             submitButton = <Spinner color={KOLIBER_COLOR} />;
         }
         return (
-            <Container>
-                <ScrollView>
+            <Root>
+                <Container>
+                    <ScrollView>
+                        <Content>
+                            <Card>
+                                <CardItem header>
+                                    <Text>Photo</Text>
+                                </CardItem>
+                                <CardItem>
+                                    <ChoosePhoto onImagePicked={this.imagePickedHandler} ref={ref => (this.imagePicker = ref)} />
+                                </CardItem>
+                            </Card>
+                            <Card>
+                                <CardItem header>
+                                    <Text>Location</Text>
+                                </CardItem>
+                                <CardItem>
+                                    <ChooseLocation onLocationPick={this.locationPickedHandler} ref={ref => (this.locationPicker = ref)} />
+                                </CardItem>
+                            </Card>
+                            <Card>
+                                <CardItem header>
+                                    <Text>Details</Text>
+                                </CardItem>
+                                <CardItem>
+                                    <Form style={{ flex: 1 }} >
+                                        <Item stackedLabel>
+                                            <Label>Title</Label>
+                                            <TravelDiaryInput
+                                                placeholder="Write title here"
+                                                value={this.state.controls.title.value}
+                                                valid={this.state.controls.title.valid}
+                                                touched={this.state.controls.title.touched}
+                                                onChangeText={this.titleChangedHandler} />
+                                        </Item>
 
-                    <Content>
-                        <Card>
-                            <CardItem header>
-                                <Text>Photo</Text>
-                            </CardItem>
-                            <CardItem>
-                                <ChoosePhoto onImagePicked={this.imagePickedHandler} ref={ref => (this.imagePicker = ref)} />
-                            </CardItem>
-                        </Card>
-                        <Card>
-                            <CardItem header>
-                                <Text>Location</Text>
-                            </CardItem>
-                            <CardItem>
-                                <ChooseLocation onLocationPick={this.locationPickedHandler} ref={ref => (this.locationPicker = ref)} />
-                            </CardItem>
-                        </Card>
-                        <Card>
-                            <CardItem header>
-                                <Text>Details</Text>
-                            </CardItem>
-                            <CardItem>
-                                <Form style={{ flex: 1 }} >
-                                    <Item stackedLabel>
-                                        <Label>Title</Label>
-                                        <TravelDiaryInput
-                                            placeholder="Write title here"
-                                            value={this.state.controls.title.value}
-                                            valid={this.state.controls.title.valid}
-                                            touched={this.state.controls.title.touched}
-                                            onChangeText={this.titleChangedHandler} />
-                                    </Item>
+                                        <Item stackedLabel>
+                                            <Label>When</Label>
+                                            <DatePicker
+                                                locale={"pl"}
+                                                timeZoneOffsetInMinutes={undefined}
+                                                modalTransparent={false}
+                                                animationType={"slide"}
+                                                androidMode={"default"}
+                                                placeHolderText="Select date"
+                                                textStyle={{ color: "black" }}
+                                                placeHolderTextStyle={{ color: HIPPOPOTAM_COLOR }}
+                                                onDateChange={this.datePickedHandler}
+                                                formatChosenDate={date => { return moment(date).format('L'); }}
+                                            />
+                                        </Item>
 
-                                    <Item stackedLabel>
-                                        <Label>When</Label>
-                                        <DatePicker
-                                            locale={"pl"}
-                                            timeZoneOffsetInMinutes={undefined}
-                                            modalTransparent={false}
-                                            animationType={"slide"}
-                                            androidMode={"default"}
-                                            placeHolderText="Select date"
-                                            textStyle={{ color: "black" }}
-                                            placeHolderTextStyle={{ color: HIPPOPOTAM_COLOR }}
-                                            onDateChange={this.datePickedHandler}
-                                            formatChosenDate={date => { return moment(date).format('L'); }}
-                                        />
-                                    </Item>
+                                        <Item stackedLabel >
+                                            <Label>Rating</Label>
+                                            <StarRating
+                                                disabled={false}
+                                                maxStars={5}
+                                                emptyStar={'ios-star-outline'}
+                                                fullStar={'ios-star'}
+                                                halfStar={'ios-star-half'}
+                                                iconSet={'Ionicons'}
+                                                rating={this.state.controls.rating.value}
+                                                selectedStar={(rating) => this.ratingPickedHandler(rating)}
+                                                fullStarColor={KOLIBER_COLOR}
+                                            />
+                                        </Item>
 
-                                    <Item stackedLabel >
-                                        <Label>Rating</Label>
-                                        <StarRating
-                                            disabled={false}
-                                            maxStars={5}
-                                            emptyStar={'ios-star-outline'}
-                                            fullStar={'ios-star'}
-                                            halfStar={'ios-star-half'}
-                                            iconSet={'Ionicons'}
-                                            rating={this.state.controls.rating.value}
-                                            selectedStar={(rating) => this.ratingPickedHandler(rating)}
-                                            fullStarColor={KOLIBER_COLOR}
-                                        />
-                                    </Item>
+                                        <Item stackedLabel last>
+                                            <Label>Description</Label>
+                                            <Textarea
+                                                style={{ width: "100%" }} rowSpan={5}
+                                                bordered
+                                                value={this.state.controls.description.value}
+                                                placeholderTextColor={HIPPOPOTAM_COLOR}
+                                                onChangeText={this.descriptionHandler}
+                                                placeholder="Write description here" />
+                                        </Item>
+                                    </Form>
+                                </CardItem>
+                            </Card>
 
-                                    <Item stackedLabel last>
-                                        <Label>Description</Label>
-                                        <Textarea
-                                            style={{ width: "100%" }} rowSpan={5}
-                                            bordered
-                                            value={this.state.controls.description.value}
-                                            placeholderTextColor={HIPPOPOTAM_COLOR}
-                                            onChangeText={this.descriptionHandler}
-                                            placeholder="Write description here" />
-                                    </Item>
-                                </Form>
-                            </CardItem>
-                        </Card>
+                            <Card>
+                                <CardItem>
+                                    <Body style={{ flexDirection: "row", justifyContent: "center" }}>
+                                        {submitButton}
+                                    </Body>
+                                </CardItem>
+                            </Card>
+                        </Content>
 
-                        <Card>
-                            <CardItem>
-                                <Body style={{ flexDirection: "row", justifyContent: "center" }}>
-                                    {submitButton}
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </Content>
-
-                </ScrollView>
-            </Container>
+                    </ScrollView>
+                </Container>
+            </Root>
         );
     }
 }

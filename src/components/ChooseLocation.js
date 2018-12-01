@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import MapView from 'react-native-maps';
+import { showError } from '../utility/utils';
 
 const ZOOM = 0.2;
 const WARSAW_LATITUDE = 52.230641;
@@ -62,7 +63,7 @@ class ChooseLocation extends Component {
 
             err => {
                 console.log(err);
-                alert("Fetching the position failed");
+                showError("Failed to fetch the position");
             })
     }
 

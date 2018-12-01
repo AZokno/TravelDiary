@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Toast } from 'native-base';
-import { STORE_IMAGE_FUNCTION, VERIFY_USER_API, REGISTER_USER_API, REFRESH_TOKEN_API, API_KEY } from './config';
+import { STORE_IMAGE_FUNCTION, VERIFY_USER_API, REGISTER_USER_API, REFRESH_TOKEN_API, API_KEY, DB } from './config';
 
 // ## Endpoint calls
 
@@ -28,6 +28,17 @@ export const FIREBASERefreshToken = (refreshToken) => fetch(
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: "grant_type=refresh_token&refresh_token=" + refreshToken
+    }
+  )
+
+// Database
+
+export const FIREBASEAddEntry = (uid, authToken, entryData) => fetch(
+    DB + uid + ".json?auth=" +
+    authToken,
+    {
+      method: "POST",
+      body: JSON.stringify(entryData)
     }
   )
 
@@ -93,7 +104,8 @@ export const showError = message => {
     Toast.show({
         text: message,
         type: "danger",
-        buttonText: 'OK'
+        buttonText: 'OK',
+        duration: 2000
     });
 }
 

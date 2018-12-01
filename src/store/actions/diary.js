@@ -1,7 +1,7 @@
 import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from "./actions";
 import { uiStartLoading, uiStopLoading, authGetToken } from "./index";
 import { DB } from "../../utility/config"
-import { FIREBASEStoreImage } from "../../utility/utils";
+import { FIREBASEStoreImage, FIREBASEAddEntry, showError } from "../../utility/utils";
 
 export const startAddEntry = () => {
   return {
@@ -16,7 +16,7 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
     dispatch(uiStartLoading());
     dispatch(authGetToken())
       .catch(() => {
-        alert("No valid token found!");
+        showError("Security Token not found");
       })
       .then(token => {
         authToken = token.token;
@@ -25,7 +25,7 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
       })
       .catch(err => {
         console.log(err);
-        alert("Something went wrong, please try again!");
+        showError("Could not send the photo. Please try again.");
         dispatch(uiStopLoading());
       })
       .then(res => {
@@ -45,15 +45,7 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
           rating: rating,
           description: description
         };
-        console.log(entryData);
-        return fetch(
-          DB + uid + ".json?auth=" +
-          authToken,
-          {
-            method: "POST",
-            body: JSON.stringify(entryData)
-          }
-        );
+        return FIREBASEAddEntry(uid, authToken, entryData);
       })
       .then(res => {
         if (res.ok) {
@@ -69,7 +61,7 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
       })
       .catch(err => {
         console.log(err);
-        alert("Something went wrong, please try again!");
+        showError("Could not add a new diary entry. Please try again.");
         dispatch(uiStopLoading());
       });
   };
@@ -98,7 +90,7 @@ export const getEntries = () => {
         );
       })
       .catch(() => {
-        alert("No valid token found!");
+        showError("Security token could not be found.");
       })
       .then(res => {
         if (res.ok) {
@@ -124,7 +116,7 @@ export const getEntries = () => {
       })
       .catch(err => {
         dispatch(uiStopLoading());
-        alert("Something went wrong, sorry :/");
+        showError("Could not fetch your diary entires.");
         console.log(err);
       });
   };
@@ -141,7 +133,7 @@ export const deleteEntry = key => {
   return dispatch => {
     dispatch(authGetToken())
       .catch(() => {
-        alert("No valid token found!");
+        showError("Secutiry token not found.");
       })
       .then(token => {
         dispatch(removeEntry(key));
@@ -166,7 +158,7 @@ export const deleteEntry = key => {
         console.log("Done!");
       })
       .catch(err => {
-        alert("Something went wrong, sorry :/");
+        showError("Could not delete the entry. Please try again.");
         console.log(err);
       });
   };

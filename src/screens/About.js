@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { AsyncStorage, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Icon, Button, Body, Container, CardItem, Footer, Item, Card, Content, Label, H1, H2, H3, Text } from 'native-base';
+import { Root, Icon, Button, Body, Container, CardItem, Card, Content, H3, Text } from 'native-base';
 import { authLogout } from '../store/actions/index';
 import { ASYNC_STORE_EMAIL } from "../utility/config";
 
 class AboutScreen extends Component {
 
     state = {
-        email : "loading..."
+        email: "loading..."
     }
 
     constructor(props) {
@@ -18,47 +18,49 @@ class AboutScreen extends Component {
     componentDidMount() {
         AsyncStorage.getItem(ASYNC_STORE_EMAIL).then(email => {
             this.setState({
-                email : email
+                email: email
             });
         });
     }
 
     render() {
         return (
-            <Container>
-                <Content style={{ alignContent: "center" }}>
-                    <Card>
-                        <CardItem header>
-                            <Text>User</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Body style={styles.cardBodyCenter}>
-                                <H3>{this.state.email}</H3>
-                            </Body>                           
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>Application</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Body style={styles.cardBodyCenter}>
+            <Root>
+                <Container>
+                    <Content style={{ alignContent: "center" }}>
+                        <Card>
+                            <CardItem header>
+                                <Text>User</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Body style={styles.cardBodyCenter}>
+                                    <H3>{this.state.email}</H3>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                        <Card>
+                            <CardItem header>
+                                <Text>Application</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Body style={styles.cardBodyCenter}>
                                     <H3>TravelDiary v1.0</H3>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem>
-                            <Body style={styles.cardBodyCenter}>
-                                <Button danger iconLeft onPress={this.props.logoutHandler}>
-                                    <Icon name='md-power' />
-                                    <Text>Logout</Text>
-                                </Button>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                </Content>
-            </Container>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                        <Card>
+                            <CardItem>
+                                <Body style={styles.cardBodyCenter}>
+                                    <Button danger iconLeft onPress={this.props.logoutHandler}>
+                                        <Icon name='md-power' />
+                                        <Text>Logout</Text>
+                                    </Button>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    </Content>
+                </Container>
+            </Root>
         );
     }
 }
