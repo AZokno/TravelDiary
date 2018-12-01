@@ -4,16 +4,17 @@ import { LOGIN_SUCCESFUL, LOGOUT } from "./actions";
 import { uiStartLoading, uiStopLoading } from "./index";
 import { startMainApplication, startLogin } from "../../screens/InitNavigation";
 import { clearList } from "./diary";
-import { API_KEY, ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
-import { showError, signUp, login } from "../../utility/utils";
+import { ASYNC_STORE_UID, ASYNC_STORE_EMAIL, ASYNC_STORE_TOKEN, ASYNC_STORE_EXPIRY_DATE, ASYNC_STORE_REFRESH_TOKEN, REGISTER_USER_API, REFRESH_TOKEN_API, VERIFY_USER_API } from "../../utility/config";
+import { showError, FIREBASESignUp, FIREBASERefreshToken } from "../../utility/utils";
 
 export const login = (authData, authMode) => {
   return dispatch => {
-    const authenticationAction;
+    const authenticationAction = null;
+
     if (authMode === "signup"){
-      authenticationAction = signUp(authData);
+      authenticationAction = FIREBASESignUp(authData);
     } else {
-      authenticationAction = login(authData);
+      authenticationAction = FIREBASELogin(authData);
     }
 
     dispatch(uiStartLoading());
@@ -130,16 +131,7 @@ export const authGetToken = () => {
           uid = refreshItems[1];
           email = refreshItems[2];
 
-          return fetch(
-            REFRESH_TOKEN_API + "?key=" + API_KEY,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: "grant_type=refresh_token&refresh_token=" + refreshToken
-            }
-          );
+          return FIREBASERefreshToken(refreshToken);
         })
           .then(res => res.json())
           .then(parsedRes => {

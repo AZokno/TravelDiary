@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Toast } from 'native-base';
+import { STORE_IMAGE_FUNCTION, VERIFY_USER_API, REGISTER_USER_API, REFRESH_TOKEN_API, API_KEY } from './config';
 
-// Endpoint calls
+// ## Endpoint calls
 
-export const login = (authData) => doAuhtentication(VERIFY_USER_API + "?key=" + API_KEY, authData);
-export const signUp = (authData) => doAuhtentication(REGISTER_USER_API + "?key=" + API_KEY, authData);
+// Authentication
+export const FIREBASELogin = (authData) => doAuhtentication(VERIFY_USER_API + "?key=" + API_KEY, authData);
+export const FIREBASESignUp = (authData) => doAuhtentication(REGISTER_USER_API + "?key=" + API_KEY, authData);
 
 const doAuhtentication = (url, authData) => fetch(url, {
     method: "POST",
@@ -18,7 +20,33 @@ const doAuhtentication = (url, authData) => fetch(url, {
     }
   })
 
-// Validation
+export const FIREBASERefreshToken = (refreshToken) => fetch(
+    REFRESH_TOKEN_API + "?key=" + API_KEY,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "grant_type=refresh_token&refresh_token=" + refreshToken
+    }
+  )
+
+// Store image
+
+export const FIREBASEStoreImage = (base64, token) => fetch(
+    STORE_IMAGE_FUNCTION,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        image: base64
+      }),
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    }
+  )
+
+// ## Validation
 
 export const validate = (val, rules, connectedValue) => {
     let isValid = true;

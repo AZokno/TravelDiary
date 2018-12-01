@@ -1,11 +1,12 @@
 import { SET_ENTRIES, REMOVE_ENTRY, ENTRY_ADDED, START_ADD_ENTRY, CLEAR_LIST } from "./actions";
 import { uiStartLoading, uiStopLoading, authGetToken } from "./index";
-import { DB, STORE_IMAGE_FUNCTION } from "../../utility/config"
+import { DB } from "../../utility/config"
+import { FIREBASEStoreImage } from "../../utility/utils";
 
 export const startAddEntry = () => {
-    return {
-        type: START_ADD_ENTRY
-    };
+  return {
+    type: START_ADD_ENTRY
+  };
 };
 
 export const addEntry = (entryTitle, location, image, date, rating, description) => {
@@ -20,18 +21,7 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
       .then(token => {
         authToken = token.token;
         uid = token.uid;
-        return fetch(
-          STORE_IMAGE_FUNCTION,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              image: image.base64
-            }),
-            headers: {
-              Authorization: "Bearer " + authToken
-            }
-          }
-        );
+        return FIREBASEStoreImage(image.base64, authToken);
       })
       .catch(err => {
         console.log(err);
@@ -40,9 +30,9 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
       })
       .then(res => {
         if (res.ok) {
-            return res.json();
+          return res.json();
         } else {
-            throw(new Error());
+          throw (new Error());
         }
       })
       .then(parsedRes => {
@@ -57,8 +47,8 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
         };
         console.log(entryData);
         return fetch(
-           DB + uid + ".json?auth=" +
-            authToken,
+          DB + uid + ".json?auth=" +
+          authToken,
           {
             method: "POST",
             body: JSON.stringify(entryData)
@@ -67,9 +57,9 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
       })
       .then(res => {
         if (res.ok) {
-            return res.json();
+          return res.json();
         } else {
-            throw(new Error());
+          throw (new Error());
         }
       })
       .then(parsedRes => {
@@ -86,15 +76,15 @@ export const addEntry = (entryTitle, location, image, date, rating, description)
 };
 
 export const entryAdded = () => {
-    return {
-        type: ENTRY_ADDED
-    };
+  return {
+    type: ENTRY_ADDED
+  };
 };
 
 export const clearList = () => {
   return {
-        type: CLEAR_LIST
-    };
+    type: CLEAR_LIST
+  };
 }
 
 export const getEntries = () => {
@@ -104,7 +94,7 @@ export const getEntries = () => {
       .then(token => {
         return fetch(
           DB + token.uid + ".json?auth=" +
-            token.token
+          token.token
         );
       })
       .catch(() => {
@@ -112,10 +102,10 @@ export const getEntries = () => {
       })
       .then(res => {
         if (res.ok) {
-            return res.json();
+          return res.json();
         } else {
-            dispatch(uiStopLoading());
-            throw(new Error());
+          dispatch(uiStopLoading());
+          throw (new Error());
         }
       })
       .then(parsedRes => {
@@ -157,9 +147,9 @@ export const deleteEntry = key => {
         dispatch(removeEntry(key));
         return fetch(
           DB + token.uid + "/" +
-            key +
-            ".json?auth=" +
-            token.token,
+          key +
+          ".json?auth=" +
+          token.token,
           {
             method: "DELETE"
           }
@@ -167,9 +157,9 @@ export const deleteEntry = key => {
       })
       .then(res => {
         if (res.ok) {
-            return res.json();
+          return res.json();
         } else {
-            throw(new Error());
+          throw (new Error());
         }
       })
       .then(parsedRes => {
