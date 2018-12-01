@@ -75,7 +75,7 @@ class AboutScreen extends Component {
 
 const styles = StyleSheet.create({
     cardBodyCenter: { flexDirection: "row", justifyContent: "center" },
-    logo: { height: 200, width: 200, marginTop: 25 }
+    logo: { height: 200, width: 200, marginTop: 20, marginBottom: 20 }
 });
 
 const mapToProps = dispatch => {
